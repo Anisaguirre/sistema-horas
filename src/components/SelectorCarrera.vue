@@ -4,7 +4,7 @@
     <h3 class="">Selecciona una carrera</h3>
     <div class="d-flex justify-content-center gap-3 mt-4">
      
-    <button class="btn-carrera" @click="$router.push('/tecnologias')">Tecnologías</button>
+    <button class="btn-carrera" @click="$router.push('/tecnologias')">Tecnologías de la Informacion</button>
     <button class="btn-carrera2" @click="$router.push('/recursos')">Recursos</button>
     
   </div>
