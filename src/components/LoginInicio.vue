@@ -44,8 +44,8 @@ export default {
       username: "",
       password: "",
       errorMessage: "",
-      USER: "jefe",
-      PASS: "12345",
+      USER: "admin",
+      PASS: "utm2025",
     };
   },
  methods: {
