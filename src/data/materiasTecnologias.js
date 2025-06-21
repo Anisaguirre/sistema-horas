@@ -68,17 +68,17 @@ export const materias = [
     { nombre: "Tutorías", horas: 1, profesor: null },
   ],
   //CUATRIMESTRE 7 ING
-   [
-    { nombre: "Matemáticas para Ing I", horas: 4, profesor: null },
-    { nombre: "Metodologías para el desarrollo de proyectos", horas: 3, profesor: null },
-    { nombre: "Arquitectura de software", horas: 5, profesor: null },
-    { nombre: "Experiencia de usuario", horas: 3, profesor: null },
-    { nombre: "Seguridad informática", horas: 3, profesor: null },
-    { nombre: "Ingles VI", horas: 4, profesor: null },
-    { nombre: "Administración del tiempo", horas: 3, profesor: null },
-    { nombre: "Asesorías", horas: 1, profesor: null },
-    { nombre: "Tutorías", horas: 1, profesor: null },
-  ],
+   //[
+     //{ nombre: "Matemáticas para Ing I", horas: 4, profesor: null },
+     //{ nombre: "Metodologías para el desarrollo de proyectos", horas: 3, profesor: null },
+     //{ nombre: "Arquitectura de software", horas: 5, profesor: null },
+     //{ nombre: "Experiencia de usuario", horas: 3, profesor: null },
+     //{ nombre: "Seguridad informática", horas: 3, profesor: null },
+     //{ nombre: "Ingles VI", horas: 4, profesor: null },
+     //{ nombre: "Administración del tiempo", horas: 3, profesor: null },
+     //{ nombre: "Asesorías", horas: 1, profesor: null },
+     //{ nombre: "Tutorías", horas: 1, profesor: null },
+   //],
    [
     //CUATRIMESTRE 8 ING
     { nombre: "Matemáticas de para Ing II", horas: 5, profesor: null },
