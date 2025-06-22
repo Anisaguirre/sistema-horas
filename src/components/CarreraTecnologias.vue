@@ -1,14 +1,14 @@
 <template>
   <div class="container my-4 animate__animated animate__fadeIn">
-<h2 class="text-primary mb-4 text-center">Carrera Tecnologías de la Información</h2>
+  <h2 class="text-primary mb-4 text-center">Carrera Tecnologías de la Información</h2>
+   <select v-model="cuatri" class="form-select w-100 mb-3">
+  <option disabled value="">Selecciona un cuatrimestre</option>
+  <option v-for="n in cuatrimestresPersonalizados" :key="n" :value="n">
+    Cuatrimestre {{ n }}
+  </option>
+</select>
 
-    <select
-      v-model="cuatri"
-      class="form-select w-100 mb-3"
-      aria-label="Selecciona cuatrimestre tecnologías" >
-      <option disabled value="">Selecciona un cuatrimestre</option>
-      <option v-for="n in materias.length" :key="n" :value="n">Cuatrimestre {{ n }}</option>
-    </select>
+
 <button class="btn btn-secondary mb-3 text-center" @click="volverSelector"> REGRESAR</button>
 
     <transition name="fade" mode="out-in">
@@ -24,9 +24,7 @@
           </thead>
           <tbody>
             <tr
-              v-for="materia in materias[cuatri - 1]"
-              :key="materia.nombre"
-            >
+             v-for="materia in materiasDelCuatrimestre" :key="materia.nombre">
               <td>{{ materia.nombre }}</td>
               <td>{{ materia.horas }}</td>
               <td>
@@ -76,14 +74,32 @@ import { materias, profesores } from "@/data/materiasTecnologias";
 
 export default {
   name: "CarreraTecnologias",
-  data() {
-    return {
-      cuatri: null,
-      profesorSeleccionado: null,
-      detalleVisible: false,
-      profesores,
-      materias,
-    };
+ data() {
+  return {
+    cuatri: null,
+    profesorSeleccionado: null,
+    detalleVisible: false,
+    profesores,
+    materias,
+    cuatrimestreSeleccionado: null,
+    cuatrimestresPersonalizados: [1, 2, 3, 4, 5, 7, 8, 9],
+    mapaIndicesCuatrimestres: {
+      1: 0,
+      2: 1,
+      3: 2,
+      4: 3,
+      5: 4,
+      7: 5,
+      8: 6,
+      9: 7,
+    },
+  };
+},
+  computed: {
+    materiasDelCuatrimestre() {
+      const indice = this.mapaIndicesCuatrimestres[this.cuatri];
+      return indice !== undefined ? this.materias[indice] : [];
+    },
   },
   methods: {
     volverSelector() {

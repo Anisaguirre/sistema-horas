@@ -68,17 +68,17 @@ export const materias = [
     { nombre: "Tutorías", horas: 1, profesor: null },
   ],
   //CUATRIMESTRE 7 ING
-   //[
-     //{ nombre: "Matemáticas para Ing I", horas: 4, profesor: null },
-     //{ nombre: "Metodologías para el desarrollo de proyectos", horas: 3, profesor: null },
-     //{ nombre: "Arquitectura de software", horas: 5, profesor: null },
-     //{ nombre: "Experiencia de usuario", horas: 3, profesor: null },
-     //{ nombre: "Seguridad informática", horas: 3, profesor: null },
-     //{ nombre: "Ingles VI", horas: 4, profesor: null },
-     //{ nombre: "Administración del tiempo", horas: 3, profesor: null },
-     //{ nombre: "Asesorías", horas: 1, profesor: null },
-     //{ nombre: "Tutorías", horas: 1, profesor: null },
-   //],
+   [
+     { nombre: "Matemáticas para Ing I", horas: 4, profesor: null },
+     { nombre: "Metodologías para el desarrollo de proyectos", horas: 3, profesor: null },
+     { nombre: "Arquitectura de software", horas: 5, profesor: null },
+    { nombre: "Experiencia de usuario", horas: 3, profesor: null },
+     { nombre: "Seguridad informática", horas: 3, profesor: null },
+     { nombre: "Ingles VI", horas: 4, profesor: null },
+     { nombre: "Administración del tiempo", horas: 3, profesor: null },
+    { nombre: "Asesorías", horas: 1, profesor: null },
+     { nombre: "Tutorías", horas: 1, profesor: null },
+   ],
    [
     //CUATRIMESTRE 8 ING
     { nombre: "Matemáticas de para Ing II", horas: 5, profesor: null },
@@ -102,15 +102,5 @@ export const materias = [
     { nombre: "Asesorías", horas: 2, profesor: null },
     { nombre: "Tutorías", horas: 2, profesor: null },
   ],
-   [
-    { nombre: "Programación III", horas: 6, profesor: null },
-    { nombre: "Redes Inalámbricas", horas: 5, profesor: null },
-    { nombre: "Desarrollo Web", horas: 4, profesor: null },
-    { nombre: "Administración de Sistemas", horas: 6, profesor: null },
-    { nombre: "Matemáticas Aplicadas", horas: 5, profesor: null },
-    { nombre: "Sistemas Distribuidos", horas: 4, profesor: null },
-    { nombre: "Programación Orientada a Objetos", horas: 3, profesor: null },
-    { nombre: "Asesorías", horas: 2, profesor: null },
-    { nombre: "Tutorías", horas: 2, profesor: null },
-  ],
+   
 ];
