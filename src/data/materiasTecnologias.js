@@ -93,7 +93,7 @@ export const materias = [
    [    //CUATRIMESTRE 9 ING
 
     { nombre: "Programación III", horas: 6, profesor: null },
-    { nombre: "Redes Inalámbricas", horas: 5, profesosr: null },
+    { nombre: "Redes Inalámbricas", horas: 5, profesor: null },
     { nombre: "Desarrollo Web", horas: 4, profesor: null },
     { nombre: "Administración de Sistemas", horas: 6, profesor: null },
     { nombre: "Matemáticas Aplicadas", horas: 5, profesor: null },
