@@ -9,6 +9,12 @@ import DetalleProfesor from '../components/DetalleProfesor.vue';
 import DetalleProfesorRecursos from "@/components/DetalleProfesorRecursos.vue";
 
 const routes = [
+  [
+  { path: '/', component: Login },
+  { path: '/SelectorCarrera', component: SelectorCarrera },
+  { path: '/recursos CarreraRecursos', component: CarreraRecursos },
+  { path: '/tecnologias CarreraTecnologias', component: CarreraTecnologias },
+],
      
       {
     path: '/',

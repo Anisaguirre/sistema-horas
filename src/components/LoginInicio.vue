@@ -1,10 +1,18 @@
 <template>
-  <div class="container mt-5" style="max-width: 400px;">
-    <div class="card p-4 animate__animated animate__fadeInDown">
-      <h3 class="text-center mb-4">Inicio de sesión</h3>
+  <div class="container mt-5" style="max-width: 500px;">
+    <div class="card p-4 animate__animated animate__fadeInDown text-center">
+      
+      <!-- Imagen del logo -->
+<img
+  src="@/assets/UTM.jpg"
+  alt="Logo"
+  class="mx-auto d-block mb-3 animate__animated animate__zoomIn"
+  style="width: 120px; height: 120px; padding: 5px; background: white;"
+/>
+      <h3 class="mb-4">Inicio de sesión</h3>
 
       <form @submit.prevent="login">
-        <div class="mb-3">
+        <div class="mb-3 text-start">
           <label for="username" class="form-label">Usuario</label>
           <input
             type="text"
@@ -15,7 +23,7 @@
           />
         </div>
 
-        <div class="mb-3">
+        <div class="mb-3 text-start">
           <label for="password" class="form-label">Contraseña</label>
           <input
             type="password"
