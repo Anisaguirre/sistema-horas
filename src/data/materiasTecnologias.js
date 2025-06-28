@@ -17,8 +17,9 @@ export const materias = [
     { nombre: "Fundamentos de redes", horas: 4, profesor: null },
     { nombre: "Fundamentos matemáticos", horas: 7, profesor: null },
     { nombre: "Física", horas: 6, profesor: null },
-    { nombre: "Asesorías", horas: 1, profesor: null },
+  { nombre: "Asesorías", horas: 1, profesor: null },
     { nombre: "Tutorías", horas: 1, profesor: null },
+    { nombre: "Actividad extraescolar", horas: 1, profesor: null },
   ],
   [
     //CUATRIMESTRE 2 NEM
@@ -29,8 +30,9 @@ export const materias = [
     { nombre: "Sistemas operativos", horas: 5, profesor: null },
     { nombre: "Habilidades socioemocionales y manejo de conflictos", horas: 4, profesor: null },
     { nombre: "Ingles II", horas: 5, profesor: null },
-    { nombre: "Asesorías", horas: 1, profesor: null },
+{ nombre: "Asesorías", horas: 1, profesor: null },
     { nombre: "Tutorías", horas: 1, profesor: null },
+    { nombre: "Actividad extraescolar", horas: 1, profesor: null },
   ],
   [
     //3 cuatrimestre NEM
@@ -41,8 +43,9 @@ export const materias = [
     { nombre: "Bases de datos", horas: 5, profesor: null },
     { nombre: "Programación orientada a objetos", horas: 7, profesor: null },
     { nombre: "Tópicos de calidad para el diseño de software", horas: 6, profesor: null },
-    { nombre: "Asesorías", horas: 1, profesor: null },
+{ nombre: "Asesorías", horas: 1, profesor: null },
     { nombre: "Tutorías", horas: 1, profesor: null },
+    { nombre: "Actividad extraescolar", horas: 1, profesor: null },
   ],
    [
     //4 CUATRIMESTRE NEM
@@ -53,8 +56,9 @@ export const materias = [
     { nombre: "Estructura de datos", horas: 5, profesor: null },
     { nombre: "Ética profesional", horas: 4, profesor: null },
     { nombre: "Ingles IV", horas: 5, profesor: null },
-    { nombre: "Asesorías", horas: 1, profesor: null },
+   { nombre: "Asesorías", horas: 1, profesor: null },
     { nombre: "Tutorías", horas: 1, profesor: null },
+    { nombre: "Actividad extraescolar", horas: 1, profesor: null },
   ],
    [ //5 CUATRIMESTRE NEM
     { nombre: "Ingles V", horas: 5, profesor: null },
@@ -66,6 +70,7 @@ export const materias = [
     { nombre: "Estándares y métricas para el desarrollo de software", horas: 6, profesor: null },
     { nombre: "Asesorías", horas: 1, profesor: null },
     { nombre: "Tutorías", horas: 1, profesor: null },
+    { nombre: "Actividad extraescolar", horas: 1, profesor: null },
   ],
   //CUATRIMESTRE 7 ING
    [
@@ -76,8 +81,9 @@ export const materias = [
      { nombre: "Seguridad informática", horas: 3, profesor: null },
      { nombre: "Ingles VI", horas: 4, profesor: null },
      { nombre: "Administración del tiempo", horas: 3, profesor: null },
-    { nombre: "Asesorías", horas: 1, profesor: null },
-     { nombre: "Tutorías", horas: 1, profesor: null },
+   { nombre: "Asesorías", horas: 1, profesor: null },
+    { nombre: "Tutorías", horas: 1, profesor: null },
+    { nombre: "Actividad extraescolar", horas: 1, profesor: null },
    ],
    [
     //CUATRIMESTRE 8 ING
@@ -87,8 +93,9 @@ export const materias = [
     { nombre: "Seguridad en el desarrollo de aplicaciones", horas: 4, profesor: null },
     { nombre: "Ingles VII", horas: 4, profesor: null },
     { nombre: "Planeación y organización del trabajo", horas: 3, profesor: null },
-    { nombre: "Asesorías", horas: 1, profesor: null },
+     { nombre: "Asesorías", horas: 1, profesor: null },
     { nombre: "Tutorías", horas: 1, profesor: null },
+    { nombre: "Actividad extraescolar", horas: 1, profesor: null },
   ],
    [    //CUATRIMESTRE 9 ING
 
@@ -99,8 +106,24 @@ export const materias = [
     { nombre: "Matemáticas Aplicadas", horas: 5, profesor: null },
     { nombre: "Sistemas Distribuidos", horas: 4, profesor: null },
     { nombre: "Programación Orientada a Objetos", horas: 3, profesor: null },
-    { nombre: "Asesorías", horas: 2, profesor: null },
-    { nombre: "Tutorías", horas: 2, profesor: null },
+    { nombre: "Asesorías", horas: 1, profesor: null },
+    { nombre: "Tutorías", horas: 1, profesor: null },
+    { nombre: "Actividad extraescolar", horas: 1, profesor: null },
+
+  ],
+    [    //CUATRIMESTRE 10 ING
+
+    { nombre: "Gestión del proceso de desarrollo de software", horas: 4, profesor: null },
+    { nombre: "Aplicaciones web progresivas", horas: 3, profesor: null },
+    { nombre: "Integradora", horas: 2, profesor: null },
+    { nombre: "Desarrollo movil integral", horas: 6, profesor: null },
+    { nombre: "Creación de videojuegos", horas: 4, profesor: null },
+    { nombre: "Ingles IX", horas: 4, profesor: null },
+    { nombre: "Negociación empresarial", horas: 2, profesor: null },
+    { nombre: "Asesorías", horas: 1, profesor: null },
+    { nombre: "Tutorías", horas: 1, profesor: null },
+  { nombre: "Actividad extraescolar", horas: 1, profesor: null },
+
   ],
    
 ];

@@ -82,7 +82,7 @@ export default {
     profesores,
     materias,
     cuatrimestreSeleccionado: null,
-    cuatrimestresPersonalizados: [1, 2, 3, 4, 5, 7, 8, 9],
+    cuatrimestresPersonalizados: [1, 2, 3, 4, 5, 7, 8, 9,10],
     mapaIndicesCuatrimestres: {
       1: 0,
       2: 1,
@@ -92,6 +92,7 @@ export default {
       7: 5,
       8: 6,
       9: 7,
+      10: 8,
     },
   };
 },
