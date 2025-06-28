@@ -1,24 +1,26 @@
 <template>
-  <div class="container my-4 animate__animated animate__fadeIn detalle-profesor print-area">
- 
-
-    <h2 class="text-center text-primary mb-3">Detalle de {{ profesor }}</h2>
-
-    <ul class="list-group mb-3">
-      <li
-        v-for="materia in materiasProfesor"
-        :key="materia.nombre"
-        class="list-group-item d-flex justify-content-between"
-      >
-        <span>{{ materia.nombre }} (Cuatri {{ obtenerCuatri(materia) }})</span>
-        <span><strong>{{ materia.horas }} horas</strong></span>
-      </li>
-    </ul>
-    <p><strong>Total horas: {{ totalHoras }}</strong></p>
-
-    <button class="btn btn-primary me-2" @click="imprimir">Descargar e Imprimir</button>
-    <router-link to="/tecnologias" class="btn btn-secondary ms-2">Regresar</router-link>
+<div class="container my-4 animate__animated animate__fadeIn detalle-profesor print-area">
+  <div class="text-center w-100 mt-5 mb-4">
+    <h2 class="text-primary">Resumen de {{ profesor }}</h2>
   </div>
+
+  <ul class="list-group mb-3">
+    <li
+      v-for="materia in materiasProfesor"
+      :key="materia.nombre"
+      class="list-group-item d-flex justify-content-between"
+    >
+      <span>{{ materia.nombre }} (Cuatri {{ obtenerCuatri(materia) }})</span>
+      <span><strong>{{ materia.horas }} horas</strong></span>
+    </li>
+  </ul>
+
+  <p><strong>Total horas: {{ totalHoras }}</strong></p>
+
+  <button class="btn btn-primary me-2" @click="imprimir">Descargar e Imprimir</button>
+  <router-link to="/tecnologias" class="btn btn-secondary ms-2">Regresar</router-link>
+</div>
+
 </template>
 
 <script>
@@ -91,10 +93,23 @@ export default {
     left: 0;
     width: 100%;
   }
-
+.print-area h2 {
+    margin-top: 130px; /* puedes ajustar este valor */
+    text-align: center;
+    font-size: 1.6rem;
+    color: #0d6efd;
+  }
+  .header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    z-index: 1000;
+  }
   /* Oculta los botones al imprimir */
   button, a {
     display: none !important;
   }
+  
 }
 </style>

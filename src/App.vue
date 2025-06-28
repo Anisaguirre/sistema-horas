@@ -24,11 +24,15 @@ export default {
       isLoggedIn: false,
     };
   },
-  computed: {
-    mostrarEncabezado() {
-      const rutasConEncabezado = ['/selector', '/recursos', '/tecnologias'];
-      return rutasConEncabezado.includes(this.$route.path);
-    }
+computed: {
+  mostrarEncabezado() {
+    const rutasConEncabezado = ['/selector', '/recursos', '/tecnologias'];
+    return (
+      rutasConEncabezado.includes(this.$route.path) ||
+      this.$route.path.startsWith('/detalle-profesor/') ||
+      this.$route.path.startsWith('/detalle-profesor-recursos/')
+    );
+  }
   },
   methods: {
     handleLoginSuccess() {
