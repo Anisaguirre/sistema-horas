@@ -5,7 +5,7 @@
     <div class="d-flex justify-content-center gap-3 mt-4">
      
     <button class="btn-carrera" @click="$router.push('/tecnologias')">Tecnologías de la Informacion</button>
-    <button class="btn-carrera2" @click="$router.push('/recursos')">Recursos</button>
+    <button class="btn-carrera2" @click="$router.push('/recursos')">Recursos Naturales</button>
     
   </div>
 <button @click="cerrarSesion" class="btn btn-danger mt-4">Cerrar sesión</button>
