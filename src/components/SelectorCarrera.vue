@@ -1,8 +1,15 @@
 <template>
-  <div class="container text-center mt-5 animate__animated animate__fadeIn">
-    <h2 class="selector-titulo">Bienvenido</h2>
-    <h3 class="">Selecciona una carrera</h3>
-    <div class="d-flex justify-content-center gap-3 mt-4">
+  <div class="container text-center mt-2 animate__animated animate__fadeIn">
+      
+    <h1 class="selector-titulo">Bienvenido </h1>
+<h2>
+  <span class="subrayado-cuadro">Sistema para la asignación de horas al docente
+  </span>
+</h2>
+  
+<h3 class="">Selecciona una carrera</h3>
+  
+    <div class="d-flex justify-content-center gap-3 mt-2">
      
     <button class="btn-carrera" @click="$router.push('/tecnologias')">Tecnologías de la Informacion</button>
     <button class="btn-carrera2" @click="$router.push('/recursos')">Recursos Naturales</button>
@@ -97,6 +104,13 @@ export default {
   transition: color 0.4s ease;
   cursor: pointer;
 }
+.subrayado-cuadro {
+  background-color: #c7f877; /* fondo tipo marcador suave */
+  padding: 4px 8px;
+  border-radius: 4px;
+  box-decoration-break: clone;
+}
+
 
 .btn-carrera2::before {
   content: "";

@@ -3,7 +3,10 @@
         <div class="header-content">
 
     <img src="@/assets/UTM.jpg" alt="Logo 1" class="logo" />
-    <h2 class="title">Universidad Tecnológica del Mezquital</h2>
+    <div class="header-text">
+        <h2 class="title">Universidad Tecnológica del Mezquital</h2>
+        <p class="subtitle">Dpto. Subdirección Académica</p>
+      </div>
     <img src="@/assets/venado.jpg" alt="Logo 2" class="logo" />
         </div>
   </header>
@@ -20,7 +23,7 @@ export default {
 .header {
   background: linear-gradient(to right, #4df030, #eedc3b);
   color: white;
-  padding: 15px;
+  padding: 10px 20px; 
   text-align: center;
 }
 
@@ -28,6 +31,7 @@ export default {
   display: flex;
   align-items: center;
   justify-content: center;
+
 }
 
 .title {
