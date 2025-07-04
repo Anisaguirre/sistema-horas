@@ -76,7 +76,7 @@ export default {
   name: "CarreraTecnologias",
  data() {
   return {
-    cuatri: null,
+    cuatri: "",
     profesorSeleccionado: null,
     detalleVisible: false,
     profesores,

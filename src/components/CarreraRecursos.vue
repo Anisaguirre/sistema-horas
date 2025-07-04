@@ -65,7 +65,7 @@ export default {
   name: "CarreraRecursos",
   data() {
   return {
-    cuatri: null,
+    cuatri: "",
     profesorSeleccionado: null,
     detalleVisible: false,
     profesores: profesoresRecursos,  // <-- Cambiar aquí

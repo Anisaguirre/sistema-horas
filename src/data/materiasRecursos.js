@@ -4,7 +4,8 @@ export const profesoresRecursos = [
   "M.C Roberto Flores Salas",
   "Ing. Luis Alberto Simental Serrano",
   "M.C Francisco Javier Flores Negrete",
-  "M.C Omar Silva",
+  "M.M.E Carlos Omar Silva Aguirre",
+  "Nuevo profe de ingles"
 
 ];
 
@@ -29,7 +30,7 @@ export const materiasRecursos = [
     { nombre: "Ingles II", horas: 5, profesor: null },
     { nombre: "Meteorología y climatología", horas: 4, profesor: null },
     { nombre: "Probabilidad y estadística", horas: 5, profesor: null },
-    { nombre: "Sistema de información geográfica", horas: 5, profesor: null },
+    { nombre: "Sistemas de información geográfica", horas: 5, profesor: null },
     { nombre: "Tutorías", horas: 1, profesor: null },
     { nombre: "Asesorías", horas: 1, profesor: null },
     { nombre: "Actividad extraescolar", horas: 1, profesor: null },
@@ -37,8 +38,8 @@ export const materiasRecursos = [
   ],
   [//CUATRIMESTRE 3 NME
     { nombre: "Cálculo integral", horas: 4, profesor: null },
-    { nombre: "Componentes del ecosistema y análisis instrumental", horas: 7, profesor: null },
-    { nombre: "Desarrollo del pensamiento y toa de decisiones", horas: 4, profesor: null },
+    { nombre: "Componentes del ecosistema y análisis", horas: 7, profesor: null },
+    { nombre: "Desarrollo del pensamiento y toma de decisiones", horas: 4, profesor: null },
     { nombre: "Edafología", horas: 6, profesor: null },
     { nombre: "Ingles III", horas: 5, profesor: null },
     { nombre: "Inventario", horas: 5, profesor: null },
@@ -77,7 +78,6 @@ export const materiasRecursos = [
       [//CUATRIMESTRE 7 NME
     { nombre: "Físico-Química", horas: 5, profesor: null },
     { nombre: "Cálculo diferencial", horas: 4, profesor: null },
-    { nombre: "Meteorología y climatología", horas: 3, profesor: null },
     { nombre: "Ecotecnias", horas: 5, profesor: null },
     { nombre: "Administración del tiempo", horas: 3, profesor: null },
     { nombre: "Industrias forestales", horas: 3, profesor: null },
@@ -103,7 +103,6 @@ export const materiasRecursos = [
   ],
       [//CUATRIMESTRE 9 NME
     { nombre: "Manejo de residuos", horas: 4, profesor: null },
-    { nombre: "Cartografía", horas: 4, profesor: null },
     { nombre: "Dirección de equipos de alto rendimiento", horas: 2, profesor: null },
     { nombre: "Economía rural", horas: 3, profesor: null },
     { nombre: "Ingles VIII", horas: 4, profesor: null },
@@ -121,7 +120,7 @@ export const materiasRecursos = [
     { nombre: "Elaboración de información geográfica", horas: 4, profesor: null },
     { nombre: "Ingles IX", horas: 4, profesor: null },
     { nombre: "Integradora", horas: 2, profesor: null },
-    { nombre: "Manejo del fuego", horas: 0, profesor: null }, //pendiente de horas, no venia en el marco curricular
+    { nombre: "Manejo del fuego", horas: 4, profesor: null }, //pendiente de horas, no venia en el marco curricular
     { nombre: "Matemáticas para Ing II", horas: 5, profesor: null }, //pendiente de horas, no venia en el marco curricular
     { nombre: "Negociación empresarial", horas: 2, profesor: null },
     { nombre: "Tutorías", horas: 1, profesor: null },
