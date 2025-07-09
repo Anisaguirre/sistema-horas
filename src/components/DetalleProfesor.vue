@@ -24,7 +24,6 @@
 </template>
 
 <script>
-import { materias } from "@/data/materiasTecnologias";
 import jsPDF from "jspdf";
 import "jspdf-autotable";
 
@@ -33,20 +32,35 @@ export default {
   data() {
     return {
       profesor: this.$route.params.nombre,
-      materias,
+      asignaciones: {},
+      materiasProfesor: [],
     };
   },
   computed: {
-    materiasProfesor() {
-      return this.materias.flat().filter(m => m.profesor === this.profesor);
-    },
     totalHoras() {
-      return this.materiasProfesor.reduce((acc, m) => acc + m.horas, 0);
+      return this.materiasProfesor.reduce((acc, m) => acc + (m.horas || 0), 0);
+    }
+  },
+  created() {
+    const guardado = localStorage.getItem("asignaciones");
+    if (guardado) {
+      this.asignaciones = JSON.parse(guardado);
+
+      // Obtener todas las materias asignadas a este profesor
+      this.materiasProfesor = Object.values(this.asignaciones)
+        .flat()
+        .filter((m) => m.profesor === this.profesor);
     }
   },
   methods: {
     obtenerCuatri(materia) {
-      return this.materias.findIndex(c => c.includes(materia)) + 1;
+      // Buscar en qué cuatrimestre está esta materia
+      for (const clave in this.asignaciones) {
+        if (this.asignaciones[clave].includes(materia)) {
+          return clave;
+        }
+      }
+      return "Desconocido";
     },
     imprimir() {
       window.print();
@@ -56,14 +70,14 @@ export default {
       doc.setFontSize(18);
       doc.text(`Detalle de ${this.profesor}`, 14, 22);
 
-      const rows = this.materiasProfesor.map(m => [
+      const rows = this.materiasProfesor.map((m) => [
         m.nombre,
-        `Cuatri ${this.obtenerCuatri(m)}`,
+        this.obtenerCuatri(m),
         `${m.horas} horas`
       ]);
 
       doc.autoTable({
-        head: [['Materia', 'Cuatrimestre', 'Horas']],
+        head: [["Materia", "Cuatrimestre", "Horas"]],
         body: rows,
         startY: 30,
       });
@@ -74,6 +88,11 @@ export default {
   }
 };
 </script>
+
+<style scoped>
+/* Tu estilo original aquí */
+</style>
+
 <style scoped>
 @media print {
   /* Oculta todo por defecto */

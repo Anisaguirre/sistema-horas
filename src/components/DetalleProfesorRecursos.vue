@@ -33,16 +33,30 @@ export default {
     };
   },
   computed: {
-    materiasProfesor() {
-      return this.materias.flat().filter(m => m.profesor === this.profesor);
-    },
     totalHoras() {
-      return this.materiasProfesor.reduce((acc, m) => acc + m.horas, 0);
-    },
+      return this.materiasProfesor.reduce((acc, m) => acc + (m.horas || 0), 0);
+    }
+  },
+  created() {
+    const guardado = localStorage.getItem("asignaciones");
+    if (guardado) {
+      this.asignaciones = JSON.parse(guardado);
+
+      // Obtener todas las materias asignadas a este profesor
+      this.materiasProfesor = Object.values(this.asignaciones)
+        .flat()
+        .filter((m) => m.profesor === this.profesor);
+    }
   },
   methods: {
-    obtenerCuatri(materia) {
-      return this.materias.findIndex(c => c.includes(materia)) + 1;
+     obtenerCuatri(materia) {
+      // Buscar en qué cuatrimestre está esta materia
+      for (const clave in this.asignaciones) {
+        if (this.asignaciones[clave].includes(materia)) {
+          return clave;
+        }
+      }
+      return "Desconocido";
     },
     imprimir() {
       window.print();
@@ -89,10 +103,23 @@ export default {
     left: 0;
     width: 100%;
   }
-
+.print-area h2 {
+    margin-top: 130px; /* puedes ajustar este valor */
+    text-align: center;
+    font-size: 1.6rem;
+    color: #0d6efd;
+  }
+  .header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    z-index: 1000;
+  }
   /* Oculta los botones al imprimir */
   button, a {
     display: none !important;
   }
+  
 }
 </style>
