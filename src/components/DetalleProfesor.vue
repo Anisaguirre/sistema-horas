@@ -1,37 +1,42 @@
 <template>
-<div class="container my-4 animate__animated animate__fadeIn detalle-profesor print-area">
-  <div class="text-center w-100 mt-5 mb-4">
-    <h2 class="text-primary">Resumen de {{ profesor }}</h2>
+  <div class="container my-4 animate__animated animate__fadeIn detalle-profesor print-area">
+    <div class="text-center w-100 mt-5 mb-4">
+      <h2 class="text-primary">
+        Resumen de {{ profesor.nombre }} ({{ profesor.carrera }})
+      </h2>
+    </div>
+
+    <ul class="list-group mb-3">
+      <li
+        v-for="materia in materiasProfesor"
+        :key="materia.nombre"
+        class="list-group-item d-flex justify-content-between"
+      >
+        <span>{{ materia.nombre }} (Cuatri {{ obtenerCuatri(materia) }})</span>
+        <span><strong>{{ materia.horas }} horas</strong></span>
+      </li>
+    </ul>
+
+    <p><strong>Total horas: {{ totalHoras }}</strong></p>
+
+    <button class="btn btn-primary me-2" @click="imprimir">Descargar e Imprimir</button>
+    <router-link to="/tecnologias" class="btn btn-secondary ms-2">Regresar</router-link>
   </div>
-
-  <ul class="list-group mb-3">
-    <li
-      v-for="materia in materiasProfesor"
-      :key="materia.nombre"
-      class="list-group-item d-flex justify-content-between"
-    >
-      <span>{{ materia.nombre }} (Cuatri {{ obtenerCuatri(materia) }})</span>
-      <span><strong>{{ materia.horas }} horas</strong></span>
-    </li>
-  </ul>
-
-  <p><strong>Total horas: {{ totalHoras }}</strong></p>
-
-  <button class="btn btn-primary me-2" @click="imprimir">Descargar e Imprimir</button>
-  <router-link to="/tecnologias" class="btn btn-secondary ms-2">Regresar</router-link>
-</div>
-
 </template>
 
 <script>
 import jsPDF from "jspdf";
 import "jspdf-autotable";
+import { profesoresCombinados } from "@/data/profesoresCombinados"; // 👈 Asegúrate que este path esté bien
 
 export default {
   name: "DetalleProfesor",
   data() {
+    const nombre = this.$route.params.nombre;
+    const encontrado = profesoresCombinados.find(p => p.nombre === nombre);
+
     return {
-      profesor: this.$route.params.nombre,
+      profesor: encontrado || { nombre, carrera: "Sin carrera" },
       asignaciones: {},
       materiasProfesor: [],
     };
@@ -45,16 +50,13 @@ export default {
     const guardado = localStorage.getItem("asignaciones");
     if (guardado) {
       this.asignaciones = JSON.parse(guardado);
-
-      // Obtener todas las materias asignadas a este profesor
       this.materiasProfesor = Object.values(this.asignaciones)
         .flat()
-        .filter((m) => m.profesor === this.profesor);
+        .filter((m) => m.profesor === this.profesor.nombre);
     }
   },
   methods: {
     obtenerCuatri(materia) {
-      // Buscar en qué cuatrimestre está esta materia
       for (const clave in this.asignaciones) {
         if (this.asignaciones[clave].includes(materia)) {
           return clave;
@@ -68,7 +70,7 @@ export default {
     descargarPDF() {
       const doc = new jsPDF();
       doc.setFontSize(18);
-      doc.text(`Detalle de ${this.profesor}`, 14, 22);
+      doc.text(`Detalle de ${this.profesor.nombre}`, 14, 22);
 
       const rows = this.materiasProfesor.map((m) => [
         m.nombre,
@@ -83,41 +85,43 @@ export default {
       });
 
       doc.text(`Total horas: ${this.totalHoras}`, 14, doc.lastAutoTable.finalY + 10);
-      doc.save(`detalle-${this.profesor}.pdf`);
+      doc.save(`detalle-${this.profesor.nombre}.pdf`);
     }
   }
 };
 </script>
 
 <style scoped>
-/* Tu estilo original aquí */
+.container {
+  max-width: 800px;
+}
 </style>
 
 <style scoped>
 @media print {
-  /* Oculta todo por defecto */
   body * {
     visibility: hidden;
   }
 
-  /* Muestra solo el contenido dentro de .print-area */
-  .print-area, .print-area * {
+  .print-area,
+  .print-area * {
     visibility: visible;
   }
 
-  /* Asegura que el contenido imprimible esté en la parte superior */
   .print-area {
     position: absolute;
     top: 0;
     left: 0;
     width: 100%;
   }
-.print-area h2 {
-    margin-top: 130px; /* puedes ajustar este valor */
+
+  .print-area h2 {
+    margin-top: 130px;
     text-align: center;
     font-size: 1.6rem;
     color: #0d6efd;
   }
+
   .header {
     position: fixed;
     top: 0;
@@ -125,10 +129,10 @@ export default {
     width: 100%;
     z-index: 1000;
   }
-  /* Oculta los botones al imprimir */
-  button, a {
+
+  button,
+  a {
     display: none !important;
   }
-  
 }
 </style>

@@ -1,6 +1,8 @@
 <template>
   <div class="container my-4 animate__animated animate__fadeIn detalle-profesor print-area">
-    <h2 class="text-center text-primary mb-3">Detalle de {{ profesor }}</h2>
+    <h2 class="text-center text-primary mb-3">
+      Resumen de {{ profesor.nombre }} ({{ profesor.carrera }})
+    </h2>
 
     <ul class="list-group mb-3">
       <li
@@ -20,16 +22,19 @@
 </template>
 
 <script>
-import { materiasRecursos } from "@/data/materiasRecursos";
 import jsPDF from "jspdf";
 import "jspdf-autotable";
 
 export default {
   name: "DetalleProfesorRecursos",
   data() {
+    const nombre = this.$route.params.nombre;
+    const carrera = this.$route.query.carrera || "Sin carrera";
+
     return {
-      profesor: this.$route.params.nombre,
-      materias: materiasRecursos,
+      profesor: { nombre, carrera },
+      asignaciones: {},
+      materiasProfesor: [],
     };
   },
   computed: {
@@ -41,16 +46,13 @@ export default {
     const guardado = localStorage.getItem("asignaciones");
     if (guardado) {
       this.asignaciones = JSON.parse(guardado);
-
-      // Obtener todas las materias asignadas a este profesor
       this.materiasProfesor = Object.values(this.asignaciones)
         .flat()
-        .filter((m) => m.profesor === this.profesor);
+        .filter((m) => m.profesor === this.profesor.nombre);
     }
   },
   methods: {
-     obtenerCuatri(materia) {
-      // Buscar en qué cuatrimestre está esta materia
+    obtenerCuatri(materia) {
       for (const clave in this.asignaciones) {
         if (this.asignaciones[clave].includes(materia)) {
           return clave;
@@ -64,12 +66,12 @@ export default {
     descargarPDF() {
       const doc = new jsPDF();
       doc.setFontSize(18);
-      doc.text(`Detalle de ${this.profesor}`, 14, 22);
+      doc.text(`Detalle de ${this.profesor.nombre}`, 14, 22);
 
       const rows = this.materiasProfesor.map((m) => [
         m.nombre,
-        `Cuatri ${this.obtenerCuatri(m)}`,
-        `${m.horas} horas`,
+        this.obtenerCuatri(m),
+        `${m.horas} horas`
       ]);
 
       doc.autoTable({
@@ -79,32 +81,33 @@ export default {
       });
 
       doc.text(`Total horas: ${this.totalHoras}`, 14, doc.lastAutoTable.finalY + 10);
-      doc.save(`detalle-${this.profesor}.pdf`);
+      doc.save(`detalle-${this.profesor.nombre}.pdf`);
     },
   },
 };
 </script>
+
 <style scoped>
+.container {
+  max-width: 800px;
+}
+
 @media print {
-  /* Oculta todo por defecto */
   body * {
     visibility: hidden;
   }
-
-  /* Muestra solo el contenido dentro de .print-area */
-  .print-area, .print-area * {
+  .print-area,
+  .print-area * {
     visibility: visible;
   }
-
-  /* Asegura que el contenido imprimible esté en la parte superior */
   .print-area {
     position: absolute;
     top: 0;
     left: 0;
     width: 100%;
   }
-.print-area h2 {
-    margin-top: 130px; /* puedes ajustar este valor */
+  .print-area h2 {
+    margin-top: 130px;
     text-align: center;
     font-size: 1.6rem;
     color: #0d6efd;
@@ -116,10 +119,9 @@ export default {
     width: 100%;
     z-index: 1000;
   }
-  /* Oculta los botones al imprimir */
-  button, a {
+  button,
+  a {
     display: none !important;
   }
-  
 }
 </style>

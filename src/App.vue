@@ -1,14 +1,15 @@
 <template>
   <div id="app" class="d-flex flex-column min-vh-100">
-    <AppHeader v-if="isLoggedIn && mostrarEncabezado" />
+    <AppHeader />
 
     <main class="flex-grow-1">
       <router-view @login-success="handleLoginSuccess" />
     </main>
 
-    <AppFooter v-if="isLoggedIn && mostrarEncabezado" />
+    <AppFooter />
   </div>
 </template>
+
 
 <script>
 import AppHeader from './components/AppHeader.vue';

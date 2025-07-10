@@ -1,11 +1,11 @@
 // src/data/materiasRecursos.js
 
 export const profesoresRecursos = [
-  "M.C Roberto Flores Salas",
-  "Ing. Luis Alberto Simental Serrano",
-  "M.C Francisco Javier Flores Negrete",
-  "M.M.E Carlos Omar Silva Aguirre",
-  "Nuevo profe de ingles"
+   { nombre: "M.C Roberto Flores Salas", carrera: "Recursos" },
+  { nombre: "Ing. Luis Alberto Simental Serrano", carrera: "Recursos" },
+  { nombre: "M.C Francisco Javier Flores Negrete", carrera: "Recursos" },
+  { nombre: "M.M.E Carlos Omar Silva Aguirre", carrera: "Recursos" },
+  { nombre: "Nuevo profe de inglés", carrera: "Recursos" }
 
 ];
 

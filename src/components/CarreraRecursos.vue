@@ -16,7 +16,7 @@
       </option>
     </select>
 
-    <button class="btn btn-secondary mb-3 text-center" @click="volverSelector"> REGRESAR</button>
+    <button class="btn btn-secondary mb-3 text-center" @click="volverSelector">REGRESAR</button>
 
     <transition name="fade" mode="out-in">
       <div v-if="cuatri && (!mostrarSelectorGrupo || grupo)">
@@ -36,8 +36,12 @@
               <td>
                 <select v-model="materia.profesor" class="form-select form-select-sm">
                   <option :value="null" disabled>Selecciona profesor</option>
-                  <option v-for="profesor in profesores" :key="profesor" :value="profesor">
-                    {{ profesor }}
+                  <option
+                    v-for="profesor in profesores"
+                    :key="profesor.nombre"
+                    :value="profesor.nombre"
+                  >
+                    {{ profesor.nombre }} ({{ profesor.carrera }})
                   </option>
                 </select>
               </td>
@@ -53,10 +57,13 @@
     <ul class="list-group mb-4">
       <li
         v-for="profesor in profesores"
-        :key="profesor"
+        :key="profesor.nombre"
         class="list-group-item d-flex justify-content-between align-items-center"
       >
-        <span>{{ profesor }} - <strong>{{ horasTotalesProfesor(profesor) }}</strong> horas</span>
+        <span>
+          {{ profesor.nombre }} ({{ profesor.carrera }}) -
+          <strong>{{ horasTotalesProfesor(profesor.nombre) }}</strong> horas
+        </span>
         <button class="btn btn-outline-success btn-sm" @click="mostrarDetalleProfesor(profesor)">
           Ver detalle
         </button>
@@ -66,7 +73,8 @@
 </template>
 
 <script>
-import { materiasRecursos, profesoresRecursos } from "@/data/materiasRecursos";
+import { materiasRecursos } from "@/data/materiasRecursos";
+import { profesoresCombinados } from "@/data/profesoresCombinados";
 
 export default {
   name: "CarreraRecursos",
@@ -75,13 +83,10 @@ export default {
       cuatri: "",
       grupo: "",
       gruposDisponibles: ["A", "B", "C", "D"],
-      cuatrimestresConGrupos: [1],
-      profesorSeleccionado: null,
-      detalleVisible: false,
-      profesores: profesoresRecursos,
-      materias: materiasRecursos,
+      cuatrimestresConGrupos: [1], // cuatrimestres que tienen grupos
+      profesores: profesoresCombinados, // array con objetos { nombre, carrera }
+      materias: materiasRecursos, // renombrado para mayor consistencia
       asignaciones: {},
-      cuatrimestreSeleccionado: null,
       cuatrimestresPersonalizados: [1, 2, 3, 4, 5, 7, 8, 9, 10],
       mapaIndicesCuatrimestres: {
         1: 0,
@@ -102,7 +107,11 @@ export default {
       return this.cuatrimestresConGrupos.includes(this.cuatri);
     },
     materiasDelCuatrimestre() {
-      if (!this.asignaciones || !this.cuatri || (this.mostrarSelectorGrupo && !this.grupo)) {
+      if (
+        !this.asignaciones ||
+        !this.cuatri ||
+        (this.mostrarSelectorGrupo && !this.grupo)
+      ) {
         return [];
       }
       const key = this.mostrarSelectorGrupo
@@ -127,18 +136,20 @@ export default {
       this.$router.push("/selector");
     },
 
-    horasTotalesProfesor(profesor) {
+    horasTotalesProfesor(nombreProfesor) {
       return Object.values(this.asignaciones)
         .flat()
-        .filter((m) => m.profesor === profesor)
-        .reduce((a, b) => a + (b.horas || 0), 0);
+        .filter((m) => m.profesor === nombreProfesor)
+        .reduce((acc, m) => acc + (m.horas || 0), 0);
     },
 
     mostrarDetalleProfesor(profesor) {
       localStorage.setItem("asignaciones", JSON.stringify(this.asignaciones));
       this.$router.push({
-        name: "DetalleProfesorRecursos",
-        params: { nombre: profesor },
+            name: "DetalleProfesor",
+
+        params: { nombre: profesor.nombre },
+        query: { carrera: profesor.carrera },
       });
     },
 
@@ -154,7 +165,8 @@ export default {
         indice !== undefined &&
         !this.asignaciones[clave]
       ) {
-        this.asignaciones[clave] = JSON.parse(JSON.stringify(this.materias[indice]));
+        // Clonamos el arreglo para evitar referencia directa y poder modificar
+        this.asignaciones[clave] = JSON.parse(JSON.stringify(this.materiasRecursos[indice]));
       }
     },
   },

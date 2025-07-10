@@ -1,23 +1,25 @@
 <template>
   <div class="container my-4 animate__animated animate__fadeIn">
-  <h2 class="text-primary mb-4 text-center">Carrera Tecnologías de la Información</h2>
-   <select v-model="cuatri" class="form-select w-100 mb-3">
-  <option disabled value="">Selecciona un cuatrimestre</option>
-  <option v-for="n in cuatrimestresPersonalizados" :key="n" :value="n">
-    Cuatrimestre {{ n }}
-  </option>
-  </select>
-<select v-model="grupo" class="form-select w-100 mb-3" v-if="mostrarSelectorGrupo">
-  <option disabled value="">Selecciona un grupo</option>
-  <option v-for="g in gruposDisponibles" :key="g" :value="g">
-    Grupo {{ g }}
-  </option>
+    <h2 class="text-primary mb-4 text-center">Carrera Tecnologías de la Información</h2>
 
-</select>
+    <select v-model="cuatri" class="form-select w-100 mb-3">
+      <option disabled value="">Selecciona un cuatrimestre</option>
+      <option v-for="n in cuatrimestresPersonalizados" :key="n" :value="n">
+        Cuatrimestre {{ n }}
+      </option>
+    </select>
 
-<button class="btn btn-secondary mb-3 text-center" @click="volverSelector"> REGRESAR</button>
-<transition name="fade" mode="out-in">
-<div v-if="cuatri && (!mostrarSelectorGrupo || grupo)">
+    <select v-model="grupo" class="form-select w-100 mb-3" v-if="mostrarSelectorGrupo">
+      <option disabled value="">Selecciona un grupo</option>
+      <option v-for="g in gruposDisponibles" :key="g" :value="g">
+        Grupo {{ g }}
+      </option>
+    </select>
+
+    <button class="btn btn-secondary mb-3 text-center" @click="volverSelector"> REGRESAR</button>
+
+    <transition name="fade" mode="out-in">
+      <div v-if="cuatri && (!mostrarSelectorGrupo || grupo)">
         <h3 class="text-primary mb-3">Materias Cuatrimestre {{ cuatri }}</h3>
         <table class="table table-info table-hover shadow-sm">
           <thead class="table-info">
@@ -28,22 +30,18 @@
             </tr>
           </thead>
           <tbody>
-            <tr
-             v-for="materia in materiasDelCuatrimestre" :key="materia.nombre">
+            <tr v-for="materia in materiasDelCuatrimestre" :key="materia.nombre">
               <td>{{ materia.nombre }}</td>
               <td>{{ materia.horas }}</td>
               <td>
-                <select
-                  v-model="materia.profesor"
-                  class="form-select form-select-sm"
-                >
+                <select v-model="materia.profesor" class="form-select form-select-sm">
                   <option :value="null" disabled>Selecciona profesor</option>
                   <option
                     v-for="profesor in profesores"
-                    :key="profesor"
-                    :value="profesor"
+                    :key="profesor.nombre"
+                    :value="profesor.nombre"
                   >
-                    {{ profesor }}
+                    {{ profesor.nombre }} ({{ profesor.carrera }})
                   </option>
                 </select>
               </td>
@@ -59,10 +57,13 @@
     <ul class="list-group mb-4">
       <li
         v-for="profesor in profesores"
-        :key="profesor"
+        :key="profesor.nombre"
         class="list-group-item d-flex justify-content-between align-items-center"
       >
-        <span>{{ profesor }} - <strong>{{ horasTotalesProfesor(profesor) }}</strong> horas</span>
+        <span>
+          {{ profesor.nombre }} ({{ profesor.carrera }}) -
+          <strong>{{ horasTotalesProfesor(profesor.nombre) }}</strong> horas
+        </span>
         <button
           class="btn btn-outline-primary btn-sm"
           @click="mostrarDetalleProfesor(profesor)"
@@ -73,9 +74,10 @@
     </ul>
   </div>
 </template>
-<script>
-import { materias, profesores } from "@/data/materiasTecnologias";
 
+<script>
+import { materias, } from "@/data/materiasTecnologias";
+import { profesoresCombinados } from "@/data/profesoresCombinados";
 export default {
   name: "CarreraTecnologias",
   data() {
@@ -83,14 +85,13 @@ export default {
       cuatri: "",
       grupo: "",
       gruposDisponibles: ["A", "B", "C", "D"],
-cuatrimestresConGrupos: [1], // aquí defines qué cuatris tienen varios grupos
+      cuatrimestresConGrupos: [1], // cuatrimestres que tienen grupos
       profesorSeleccionado: null,
       detalleVisible: false,
-      profesores,
+      profesores: profesoresCombinados, // debe ser array de objetos con {nombre, carrera}
       materias,
-      asignaciones: {}, // ← IMPORTANTE
+      asignaciones: {},
 
-      cuatrimestreSeleccionado: null,
       cuatrimestresPersonalizados: [1, 2, 3, 4, 5, 7, 8, 9, 10],
       mapaIndicesCuatrimestres: {
         1: 0,
@@ -106,25 +107,21 @@ cuatrimestresConGrupos: [1], // aquí defines qué cuatris tienen varios grupos
     };
   },
 
-computed: {
-  // Saber si debe mostrarse el selector de grupo
-  mostrarSelectorGrupo() {
-    return this.cuatrimestresConGrupos.includes(this.cuatri);
+  computed: {
+    mostrarSelectorGrupo() {
+      return this.cuatrimestresConGrupos.includes(this.cuatri);
+    },
+    materiasDelCuatrimestre() {
+      if (!this.asignaciones || !this.cuatri || (this.mostrarSelectorGrupo && !this.grupo)) {
+        return [];
+      }
+      const key = this.mostrarSelectorGrupo
+        ? `${this.cuatri}-${this.grupo}`
+        : `${this.cuatri}-ÚNICO`;
+
+      return this.asignaciones[key] || [];
+    },
   },
-
-  // Obtener las materias del cuatrimestre y grupo actual
-  materiasDelCuatrimestre() {
-    if (!this.asignaciones || !this.cuatri || (this.mostrarSelectorGrupo && !this.grupo)) {
-      return [];
-    }
-
-    const key = this.mostrarSelectorGrupo
-      ? `${this.cuatri}-${this.grupo}`
-      : `${this.cuatri}-ÚNICO`;
-
-    return this.asignaciones[key] || [];
-  },
-},
 
   watch: {
     cuatri() {
@@ -137,44 +134,39 @@ computed: {
 
   methods: {
     volverSelector() {
-      this.$router.push('/selector');
+      this.$router.push("/selector");
     },
 
-    horasTotalesProfesor(profesor) {
+    horasTotalesProfesor(nombreProfesor) {
       return Object.values(this.asignaciones)
         .flat()
-        .filter((m) => m.profesor === profesor)
-.reduce((a, b) => a + (b.horas || 0), 0);
+        .filter((m) => m.profesor === nombreProfesor)
+        .reduce((a, b) => a + (b.horas || 0), 0);
     },
 
     mostrarDetalleProfesor(profesor) {
       localStorage.setItem("asignaciones", JSON.stringify(this.asignaciones));
-
       this.$router.push({
-        name: "DetalleProfesor",
-        params: { nombre: profesor },
+       params: { nombre: profesor.nombre },
+    query: { carrera: profesor.carrera }
       });
     },
 
-    obtenerCuatri(materia) {
-      return this.materias.findIndex((c) => c.includes(materia)) + 1;
+    crearAsignacionSiNoExiste() {
+      const indice = this.mapaIndicesCuatrimestres[this.cuatri];
+      const clave = this.mostrarSelectorGrupo
+        ? `${this.cuatri}-${this.grupo}`
+        : `${this.cuatri}-ÚNICO`;
+
+      if (
+        this.cuatri &&
+        (!this.mostrarSelectorGrupo || this.grupo) &&
+        indice !== undefined &&
+        !this.asignaciones[clave]
+      ) {
+        this.asignaciones[clave] = JSON.parse(JSON.stringify(this.materias[indice]));
+      }
     },
-crearAsignacionSiNoExiste() {
-  const indice = this.mapaIndicesCuatrimestres[this.cuatri];
-  const clave = this.mostrarSelectorGrupo
-    ? `${this.cuatri}-${this.grupo}`
-    : `${this.cuatri}-ÚNICO`;
-
-  if (
-    this.cuatri &&
-    (!this.mostrarSelectorGrupo || this.grupo) &&
-    indice !== undefined &&
-    !this.asignaciones[clave]
-  ) {
-    this.asignaciones[clave] = JSON.parse(JSON.stringify(this.materias[indice]));
-  }
-},
-
   },
 };
 </script>
@@ -184,4 +176,3 @@ crearAsignacionSiNoExiste() {
   max-width: 800px;
 }
 </style>
-

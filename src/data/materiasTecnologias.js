@@ -1,11 +1,13 @@
 // src/data/materiasTecnologias.js
 
 export const profesores = [
-  "Ing. Ana Yaritza Aguirre Campos",
-  "Ing. María de los Ángeles Soto Soto",
-  "Ing. Jesús Manuel Vela Gomez",
-  "M.M.E Carlos Omar Silva Aguirre",
-  "Nuevo profe de ingles"
+ 
+  { nombre: "Ing. Yaritza Aguirre Campos", carrera: "TI" },
+  { nombre: "María de los Ángeles Soto Soto", carrera: "TI" },
+  { nombre: "Jesús Manuel Vela Gomez", carrera: "TI" },
+  { nombre: "M.M.E Carlos Omar Silva Aguirre", carrera: "TI" },
+  { nombre: "Nuevo profe de ingles", carrera: "TI" }
+
 
 ];
 
