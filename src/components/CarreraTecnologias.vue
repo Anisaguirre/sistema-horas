@@ -37,11 +37,11 @@
                 <select v-model="materia.profesor" class="form-select form-select-sm">
                   <option :value="null" disabled>Selecciona profesor</option>
                   <option
-                    v-for="profesor in profesores"
-                    :key="profesor.nombre"
-                    :value="profesor.nombre"
-                  >
-                    {{ profesor.nombre }} ({{ profesor.carrera }})
+                     v-for="profesor in profesoresVisibles"
+  :key="profesor.nombre"
+  :value="profesor.nombre"
+>
+  {{ profesor.nombre }} ({{ profesor.carrera }})
                   </option>
                 </select>
               </td>
@@ -52,14 +52,15 @@
     </transition>
 
     <hr class="my-5" />
+<div v-if="mostrarResumen" class="mt-5">
 
     <h2 class="text-primary mb-3 text-center">Resumen de horas por profesor</h2>
     <ul class="list-group mb-4">
       <li
-        v-for="profesor in profesores"
-        :key="profesor.nombre"
-        class="list-group-item d-flex justify-content-between align-items-center"
-      >
+         v-for="profesor in profesoresVisibles"
+  :key="profesor.nombre"
+  class="list-group-item d-flex justify-content-between align-items-center"
+>
         <span>
           {{ profesor.nombre }} ({{ profesor.carrera }}) -
           <strong>{{ horasTotalesProfesor(profesor.nombre) }}</strong> horas
@@ -72,26 +73,30 @@
         </button>
       </li>
     </ul>
+    </div>
+    <button @click="cerrarSesion" class="btn btn-danger mt-4">Cerrar sesión</button>
+
   </div>
 </template>
 
 <script>
-import { materias, } from "@/data/materiasTecnologias";
+import { materias } from "@/data/materiasTecnologias";
 import { profesoresCombinados } from "@/data/profesoresCombinados";
+
 export default {
   name: "CarreraTecnologias",
   data() {
     return {
+      mostrarResumen: false,
       cuatri: "",
       grupo: "",
       gruposDisponibles: ["A", "B", "C", "D"],
-      cuatrimestresConGrupos: [1], // cuatrimestres que tienen grupos
+      cuatrimestresConGrupos: [1],
       profesorSeleccionado: null,
       detalleVisible: false,
-      profesores: profesoresCombinados, // debe ser array de objetos con {nombre, carrera}
+      profesores: profesoresCombinados,
       materias,
       asignaciones: {},
-
       cuatrimestresPersonalizados: [1, 2, 3, 4, 5, 7, 8, 9, 10],
       mapaIndicesCuatrimestres: {
         1: 0,
@@ -118,21 +123,74 @@ export default {
       const key = this.mostrarSelectorGrupo
         ? `${this.cuatri}-${this.grupo}`
         : `${this.cuatri}-ÚNICO`;
-
       return this.asignaciones[key] || [];
+    },
+    profesoresVisibles() {
+      if (this.cuatri === 1) {
+        return this.profesores;
+      } else {
+        return this.profesores.filter(p => p.carrera === 'TI');
+      }
     },
   },
 
   watch: {
-    cuatri() {
+    cuatri(val) {
       this.crearAsignacionSiNoExiste();
+          localStorage.setItem("cuatriSeleccionado", val);
+
+       if (!this.mostrarResumen) {
+      this.mostrarResumen = true; // solo la primera vez
+    }
+
     },
-    grupo() {
+    grupo(val) {
       this.crearAsignacionSiNoExiste();
+          localStorage.setItem("grupoSeleccionado", val);
+
+    },
+    asignaciones: {
+      handler() {
+        this.guardarAsignaciones();
+      },
+      deep: true,
     },
   },
 
+  created() {
+    this.cargarAsignaciones();
+  const cuatriGuardado = localStorage.getItem("cuatriSeleccionado");
+  const grupoGuardado = localStorage.getItem("grupoSeleccionado");
+
+  if (cuatriGuardado) {
+    this.cuatri = isNaN(+cuatriGuardado) ? cuatriGuardado : +cuatriGuardado;
+    this.mostrarResumen = true;
+  }
+
+  if (grupoGuardado) {
+    this.grupo = grupoGuardado;
+  }
+},
+
   methods: {
+    guardarAsignaciones() {
+      localStorage.setItem("asignaciones", JSON.stringify(this.asignaciones));
+    },
+
+    cargarAsignaciones() {
+      const guardado = localStorage.getItem("asignaciones");
+      if (guardado) {
+        this.asignaciones = JSON.parse(guardado);
+      }
+    },
+
+    cerrarSesion() {
+      localStorage.removeItem("asignaciones");
+       localStorage.removeItem("cuatriSeleccionado");
+  localStorage.removeItem("grupoSeleccionado");
+      this.$router.push({ name: 'LoginInicio' });
+    },
+
     volverSelector() {
       this.$router.push("/selector");
     },
@@ -147,8 +205,9 @@ export default {
     mostrarDetalleProfesor(profesor) {
       localStorage.setItem("asignaciones", JSON.stringify(this.asignaciones));
       this.$router.push({
-       params: { nombre: profesor.nombre },
-    query: { carrera: profesor.carrera }
+        name: 'DetalleProfesor',
+        params: { nombre: profesor.nombre },
+        query: { carrera: profesor.carrera },
       });
     },
 

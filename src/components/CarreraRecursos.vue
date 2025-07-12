@@ -7,7 +7,7 @@
       <option v-for="n in cuatrimestresPersonalizados" :key="n" :value="n">
         Cuatrimestre {{ n }}
       </option>
-    </select>
+    </select>  
 
     <select v-model="grupo" class="form-select w-100 mb-3" v-if="mostrarSelectorGrupo">
       <option disabled value="">Selecciona un grupo</option>
@@ -37,7 +37,7 @@
                 <select v-model="materia.profesor" class="form-select form-select-sm">
                   <option :value="null" disabled>Selecciona profesor</option>
                   <option
-                    v-for="profesor in profesores"
+                    v-for="profesor in profesoresVisibles"
                     :key="profesor.nombre"
                     :value="profesor.nombre"
                   >
@@ -52,11 +52,11 @@
     </transition>
 
     <hr class="my-5" />
-
+<div v-if="mostrarResumen" class="mt-5">
     <h2 class="text-success mb-3 text-center">Resumen de horas por profesor</h2>
     <ul class="list-group mb-4">
       <li
-        v-for="profesor in profesores"
+        v-for="profesor in profesoresVisibles"
         :key="profesor.nombre"
         class="list-group-item d-flex justify-content-between align-items-center"
       >
@@ -67,8 +67,12 @@
         <button class="btn btn-outline-success btn-sm" @click="mostrarDetalleProfesor(profesor)">
           Ver detalle
         </button>
+
       </li>
     </ul>
+     </div>
+            <button @click="cerrarSesion" class="btn btn-danger mt-4">Cerrar sesión</button>
+
   </div>
 </template>
 
@@ -80,12 +84,13 @@ export default {
   name: "CarreraRecursos",
   data() {
     return {
+      mostrarResumen: false,
       cuatri: "",
       grupo: "",
       gruposDisponibles: ["A", "B", "C", "D"],
       cuatrimestresConGrupos: [1], // cuatrimestres que tienen grupos
       profesores: profesoresCombinados, // array con objetos { nombre, carrera }
-      materias: materiasRecursos, // renombrado para mayor consistencia
+      materiasRecursos, // renombrado para mayor consistencia
       asignaciones: {},
       cuatrimestresPersonalizados: [1, 2, 3, 4, 5, 7, 8, 9, 10],
       mapaIndicesCuatrimestres: {
@@ -120,40 +125,92 @@ export default {
 
       return this.asignaciones[key] || [];
     },
+    profesoresVisibles() {
+    // Asumiendo que tienes una lista completa de profesores en this.profesores
+    if (this.cuatri === 1) {
+      return this.profesores; // mostrar todos
+    } else {
+      // Cambia 'TI' por la carrera que quieras mostrar en cuatris > 1
+      return this.profesores.filter(p => p.carrera === 'Recursos');
+    }
+  },
+
   },
 
   watch: {
-    cuatri() {
+    cuatri(val) {
       this.crearAsignacionSiNoExiste();
+          localStorage.setItem("cuatriSeleccionado", val);
+
+      if (!this.mostrarResumen) {
+      this.mostrarResumen = true; // solo la primera vez
+    }
     },
-    grupo() {
+    grupo(val) {
       this.crearAsignacionSiNoExiste();
+          localStorage.setItem("grupoSeleccionado", val);
+
+    },
+     asignaciones: {
+      handler() {
+        this.guardarAsignaciones();
+      },
+      deep: true,
     },
   },
+ created() {
+    this.cargarAsignaciones();
+  const cuatriGuardado = localStorage.getItem("cuatriSeleccionado");
+  const grupoGuardado = localStorage.getItem("grupoSeleccionado");
+
+  if (cuatriGuardado) {
+    this.cuatri = isNaN(+cuatriGuardado) ? cuatriGuardado : +cuatriGuardado;
+    this.mostrarResumen = true;
+  }
+
+  if (grupoGuardado) {
+    this.grupo = grupoGuardado;
+  }
+},
 
   methods: {
-    volverSelector() {
+  guardarAsignaciones() {
+    localStorage.setItem('asignaciones', JSON.stringify(this.asignaciones));
+  },
+    
+  cargarAsignaciones() {
+    const guardado = localStorage.getItem('asignaciones');
+    if (guardado) {
+      this.asignaciones = JSON.parse(guardado);
+    }
+  },
+
+    cerrarSesion() {
+      localStorage.removeItem("asignaciones"); // o localStorage.clear()
+        localStorage.removeItem("cuatriSeleccionado");
+  localStorage.removeItem("grupoSeleccionado");
+
+      this.$router.push({ name: "LoginInicio" });
+    },
+     volverSelector() {
       this.$router.push("/selector");
     },
-
     horasTotalesProfesor(nombreProfesor) {
       return Object.values(this.asignaciones)
         .flat()
         .filter((m) => m.profesor === nombreProfesor)
         .reduce((acc, m) => acc + (m.horas || 0), 0);
     },
-
+    
     mostrarDetalleProfesor(profesor) {
       localStorage.setItem("asignaciones", JSON.stringify(this.asignaciones));
       this.$router.push({
-            name: "DetalleProfesor",
-
+        name: "DetalleProfesorRecursos",
         params: { nombre: profesor.nombre },
         query: { carrera: profesor.carrera },
       });
     },
-
-    crearAsignacionSiNoExiste() {
+      crearAsignacionSiNoExiste() {
       const indice = this.mapaIndicesCuatrimestres[this.cuatri];
       const clave = this.mostrarSelectorGrupo
         ? `${this.cuatri}-${this.grupo}`
@@ -165,12 +222,15 @@ export default {
         indice !== undefined &&
         !this.asignaciones[clave]
       ) {
-        // Clonamos el arreglo para evitar referencia directa y poder modificar
-        this.asignaciones[clave] = JSON.parse(JSON.stringify(this.materiasRecursos[indice]));
+        this.asignaciones[clave] = JSON.parse(
+          JSON.stringify(this.materiasRecursos[indice])
+        );
       }
     },
   },
 };
+
+  
 </script>
 
 <style scoped>

@@ -17,7 +17,9 @@
     <p><strong>Total horas: {{ totalHoras }}</strong></p>
 
     <button class="btn btn-primary me-2" @click="imprimir">Descargar e Imprimir</button>
-    <router-link to="/recursos" class="btn btn-secondary ms-2">Regresar</router-link>
+    <router-link to="/recursos" class="btn btn-secondary me-2">Regresar</router-link>
+    <button @click="cerrarSesion" class="btn btn-danger me-2">Cerrar sesión</button>
+
   </div>
 </template>
 
@@ -52,6 +54,10 @@ export default {
     }
   },
   methods: {
+     cerrarSesion() {
+      localStorage.removeItem("asignaciones"); // o localStorage.clear()
+      this.$router.push({ name: "LoginInicio" });
+    },
     obtenerCuatri(materia) {
       for (const clave in this.asignaciones) {
         if (this.asignaciones[clave].includes(materia)) {
@@ -82,8 +88,12 @@ export default {
 
       doc.text(`Total horas: ${this.totalHoras}`, 14, doc.lastAutoTable.finalY + 10);
       doc.save(`detalle-${this.profesor.nombre}.pdf`);
-    },
+    }
   },
+  beforeRouteUpdate(to, from, next) {
+    this.cargarDatosProfesor();
+    next();
+  }
 };
 </script>
 

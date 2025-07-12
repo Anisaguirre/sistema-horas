@@ -20,7 +20,9 @@
     <p><strong>Total horas: {{ totalHoras }}</strong></p>
 
     <button class="btn btn-primary me-2" @click="imprimir">Descargar e Imprimir</button>
-    <router-link to="/tecnologias" class="btn btn-secondary ms-2">Regresar</router-link>
+    <router-link to="/tecnologias" class="btn btn-secondary me-2">Regresar</router-link>
+        <button @click="cerrarSesion" class="btn btn-danger me-2 ">Cerrar sesión</button>
+
   </div>
 </template>
 
@@ -28,7 +30,6 @@
 import jsPDF from "jspdf";
 import "jspdf-autotable";
 import { profesoresCombinados } from "@/data/profesoresCombinados"; // 👈 Asegúrate que este path esté bien
-
 export default {
   name: "DetalleProfesor",
   data() {
@@ -47,15 +48,29 @@ export default {
     }
   },
   created() {
-    const guardado = localStorage.getItem("asignaciones");
-    if (guardado) {
-      this.asignaciones = JSON.parse(guardado);
-      this.materiasProfesor = Object.values(this.asignaciones)
-        .flat()
-        .filter((m) => m.profesor === this.profesor.nombre);
-    }
+    this.cargarDatosProfesor();
   },
   methods: {
+    
+    cerrarSesion() {
+      localStorage.removeItem("asignaciones");
+      this.$router.push({ name: 'LoginInicio' });
+    },
+    cargarDatosProfesor() {
+      const nombre = this.$route.params.nombre;
+      const encontrado = profesoresCombinados.find(p => p.nombre === nombre);
+      this.profesor = encontrado || { nombre, carrera: "Sin carrera" };
+
+      const guardado = localStorage.getItem("asignaciones");
+      if (guardado) {
+        this.asignaciones = JSON.parse(guardado);
+        this.materiasProfesor = Object.values(this.asignaciones)
+          .flat()
+          .filter((m) => m.profesor === this.profesor.nombre);
+      } else {
+        this.materiasProfesor = [];
+      }
+    },
     obtenerCuatri(materia) {
       for (const clave in this.asignaciones) {
         if (this.asignaciones[clave].includes(materia)) {
@@ -87,6 +102,10 @@ export default {
       doc.text(`Total horas: ${this.totalHoras}`, 14, doc.lastAutoTable.finalY + 10);
       doc.save(`detalle-${this.profesor.nombre}.pdf`);
     }
+  },
+  beforeRouteUpdate(to, from, next) {
+    this.cargarDatosProfesor();
+    next();
   }
 };
 </script>
